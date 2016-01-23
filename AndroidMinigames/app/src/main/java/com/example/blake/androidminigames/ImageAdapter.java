@@ -11,6 +11,7 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private static int gridSize = 24;
     private Integer[] mThumbIds;
+    ImageView imageView;
 
 
     public ImageAdapter(Context c) {
@@ -25,17 +26,22 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mThumbIds[position];
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return mThumbIds[position];
+    }
+
+    public void setTile(int position, int state, View view, ViewGroup viewGroup) {
+        mThumbIds[position] = state;
+        getView(position, view, viewGroup);
     }
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+
         if (convertView == null) {
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(350, 350));

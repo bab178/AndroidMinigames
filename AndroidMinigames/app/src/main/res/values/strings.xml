@@ -8,4 +8,5 @@
     <string name="reset">Reset Board</string>
     <string name="flags_off">FLAGS: OFF</string>
     <string name="flags_on">FLAGS: ON</string>
+    <string name="victory">VICTORY!</string>
 </resources>

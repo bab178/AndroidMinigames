@@ -76,5 +76,15 @@
         android:text="X&apos;s Turn"
         android:id="@+id/ttt_out"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="50dp" />
+
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/reset_btn"
+        android:src="@android:drawable/ic_popup_sync"
+        android:layout_below="@+id/imageButton7"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

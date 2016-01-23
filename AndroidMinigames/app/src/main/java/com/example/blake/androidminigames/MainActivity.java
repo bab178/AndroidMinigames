@@ -29,12 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 "Game of Life"
         };
 
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.tile, R.id.tile_text, values);
 
@@ -51,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // ListView Clicked item index
                 int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listView.getItemAtPosition(position);
-
-
 
                 switch (itemPosition) {
                     case 0:
@@ -76,19 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

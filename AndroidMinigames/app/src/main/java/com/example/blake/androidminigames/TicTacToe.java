@@ -1,15 +1,17 @@
 package com.example.blake.androidminigames;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class TicTacToe extends AppCompatActivity implements View.OnClickListener{
+public class TicTacToe extends Activity implements View.OnClickListener{
 
     private static TextView result;
-    private static ImageButton one, two, three, four, five, six, seven, eight, nine;
+    private static ImageButton one, two, three, four, five, six, seven, eight, nine, reset;
     private static Tile board[] = new Tile[9];
     private static int turn;
     private static int num_turns;
@@ -19,9 +21,7 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ttt);
 
-        turn = Math.random() < 0.5 ? 1 : 0;
-        num_turns = 0;
-
+        //Identify buttons
         one = (ImageButton) findViewById(R.id.imageButton);
         two = (ImageButton) findViewById(R.id.imageButton2);
         three = (ImageButton) findViewById(R.id.imageButton3);
@@ -31,9 +31,11 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
         seven = (ImageButton) findViewById(R.id.imageButton7);
         eight = (ImageButton) findViewById(R.id.imageButton8);
         nine = (ImageButton) findViewById(R.id.imageButton9);
+        reset = (ImageButton) findViewById(R.id.reset_btn);
 
         result = (TextView) findViewById(R.id.ttt_out);
 
+        //Set onClickListeners
         one.setOnClickListener(this);
         two.setOnClickListener(this);
         three.setOnClickListener(this);
@@ -43,12 +45,9 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
         seven.setOnClickListener(this);
         eight.setOnClickListener(this);
         nine.setOnClickListener(this);
+        reset.setOnClickListener(this);
 
-        if(turn == 0)
-            result.setText("O's Turn");
-        else
-            result.setText("X's Turn");
-
+        //Add Tiles to board
         board[0] = new Tile(one);
         board[1] = new Tile(two);
         board[2] = new Tile(three);
@@ -58,11 +57,18 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
         board[6] = new Tile(seven);
         board[7] = new Tile(eight);
         board[8] = new Tile(nine);
+
+        //Change button color
+        reset.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+
+        //Reset board
+        newGame();
     }
 
     @Override
     public void onClick(View v) {
         int error = 0;
+        //Moves
         switch(v.getId()) {
             case R.id.imageButton:
                 if(board[0].state == -1) {
@@ -127,6 +133,9 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
                 }
                 else error = 1;
                 break;
+            case R.id.reset_btn:
+                newGame();
+                break;
         }
         if(error == 0) {
             if (turn == 0)
@@ -152,44 +161,77 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
         if (num_turns > 2) {
             //Horizontals
             if (board[0].state == board[1].state && board[1].state == board[2].state && board[2].state != -1){
-            result.setText(getPlayer(board[0].state) + " WINS");
-            return true;
+                board[0].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[1].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[2].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[0].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             if (board[3].state == board[4].state && board[4].state == board[5].state && board[5].state != -1){
-            result.setText(getPlayer(board[3].state) + " WINS");
-            return true;
+                board[3].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[4].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[5].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[3].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             if (board[6].state == board[7].state && board[7].state == board[8].state && board[8].state != -1){
-            result.setText(getPlayer(board[6].state) + " WINS");
-            return true;
+                board[6].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[7].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[8].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[6].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             //Verticals
             if (board[0].state == board[3].state && board[3].state == board[6].state && board[6].state != -1){
-            result.setText(getPlayer(board[0].state) + " WINS");
-            return true;
+                board[0].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[3].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[6].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[0].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             if (board[1].state == board[4].state && board[4].state == board[7].state && board[7].state != -1){
-            result.setText(getPlayer(board[1].state) + " WINS");
-            return true;
+                board[1].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[4].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[7].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[1].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             if (board[2].state == board[5].state && board[5].state == board[8].state && board[8].state != -1){
-            result.setText(getPlayer(board[2].state) + " WINS");
-            return true;
+                board[2].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[5].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[8].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[2].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             //Diagonals
             if (board[0].state == board[4].state && board[4].state == board[8].state && board[8].state != -1){
-            result.setText(getPlayer(board[0].state) + " WINS");
-            return true;
+                board[0].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[4].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[8].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[0].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
             if (board[6].state == board[4].state && board[4].state == board[2].state && board[2].state != -1){
-            result.setText(getPlayer(board[6].state) + " WINS");
-            return true;
+                board[6].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[4].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                board[2].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+                result.setText(getPlayer(board[6].state) + " WINS");
+                reset.setVisibility(View.VISIBLE);
+                return true;
             }
         }
         //DRAW
         if (num_turns == 9){
-        result.setText("DRAW");
-        return true;
+            result.setText("DRAW");
+            reset.setVisibility(View.VISIBLE);
+            return true;
         }
 
         //No wins or draw
@@ -208,5 +250,22 @@ public class TicTacToe extends AppCompatActivity implements View.OnClickListener
     private int getIcon(int turn) {
         if(turn == 0) return android.R.drawable.ic_menu_compass;
         else return android.R.drawable.ic_delete;
+    }
+
+    private void newGame() {
+        for(int i = 0; i < 9; i++) {
+            board[i].state = -1;
+            board[i].ib.setImageResource(android.R.color.transparent);
+            board[i].ib.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
+        }
+
+        turn = Math.random() < 0.5 ? 1 : 0;
+        num_turns = 0;
+
+        if(turn == 0)
+            result.setText("O's Turn");
+        else
+            result.setText("X's Turn");
+        reset.setVisibility(View.INVISIBLE);
     }
 }

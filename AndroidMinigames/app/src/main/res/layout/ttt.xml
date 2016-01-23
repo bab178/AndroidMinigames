@@ -8,7 +8,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton"
-        android:background="#000"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -16,7 +15,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton2"
-        android:background="#000"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -24,7 +22,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton3"
-        android:background="#000"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -32,7 +29,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton4"
-        android:background="#000"
         android:layout_below="@+id/imageButton"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" />
@@ -41,7 +37,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton5"
-        android:background="#000"
         android:layout_alignBottom="@+id/imageButton4"
         android:layout_alignStart="@+id/imageButton2" />
 
@@ -49,7 +44,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton6"
-        android:background="#000"
         android:layout_alignBottom="@+id/imageButton5"
         android:layout_alignStart="@+id/imageButton3" />
 
@@ -57,7 +51,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton7"
-        android:background="#000"
         android:layout_below="@+id/imageButton4"
         android:layout_alignEnd="@+id/imageButton4"
         android:layout_marginTop="20dp" />
@@ -66,7 +59,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton8"
-        android:background="#000"
         android:layout_alignBottom="@+id/imageButton7"
         android:layout_alignStart="@+id/imageButton5" />
 
@@ -74,7 +66,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageButton9"
-        android:background="#000"
         android:layout_alignBottom="@+id/imageButton8"
         android:layout_alignStart="@+id/imageButton6" />
 
@@ -83,7 +74,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="X&apos;s Turn"
-        android:id="@+id/ttt_turn"
+        android:id="@+id/ttt_out"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

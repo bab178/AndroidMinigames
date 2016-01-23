@@ -6,4 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="reset">Reset Board</string>
+    <string name="flags_off">FLAGS: OFF</string>
+    <string name="flags_on">FLAGS: ON</string>
 </resources>

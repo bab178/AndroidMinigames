@@ -1,7 +1,6 @@
 package com.example.blake.androidminigames;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -144,15 +143,6 @@ public class TicTacToe extends Activity implements View.OnClickListener{
                 turn = 0;
 
             check_victory(++num_turns, board);
-        }
-    }
-
-    private class Tile {
-        ImageButton ib;
-        int state;
-        Tile(ImageButton ib) {
-            this.ib = ib;
-            this.state = -1;
         }
     }
 

@@ -66,7 +66,7 @@ public class TicTacToe extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        int error = 0;
+        int used = 0;
         //Moves
         switch(v.getId()) {
             case R.id.imageButton:
@@ -74,75 +74,77 @@ public class TicTacToe extends Activity implements View.OnClickListener{
                     board[0].state = turn;
                     one.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton2:
                 if(board[1].state == -1) {
                     board[1].state = turn;
                     two.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton3:
                 if(board[2].state == -1) {
                     board[2].state = turn;
                     three.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton4:
                 if(board[3].state == -1) {
                     board[3].state = turn;
                     four.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton5:
                 if(board[4].state == -1) {
                     board[4].state = turn;
                     five.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton6:
                 if(board[5].state == -1) {
                     board[5].state = turn;
                     six.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton7:
                 if(board[6].state == -1) {
                     board[6].state = turn;
                     seven.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton8:
                 if(board[7].state == -1) {
                     board[7].state = turn;
                     eight.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.imageButton9:
                 if(board[8].state == -1) {
                     board[8].state = turn;
                     nine.setImageDrawable(getResources().getDrawable((getIcon(turn))));
                 }
-                else error = 1;
+                else used = 1;
                 break;
             case R.id.reset_btn:
                 newGame();
                 break;
         }
-        if(error == 0) {
+        if(used == 0) {
             if (turn == 0)
                 turn = 1;
             else
                 turn = 0;
 
-            check_victory(++num_turns, board);
+            num_turns++;
+
+            check_victory(num_turns, board);
         }
     }
 

@@ -11,13 +11,13 @@ public class ImageAdapter extends BaseAdapter {
 
     private Context context;
     private ImageView imageView;
-    private Integer[][] board;
-    int rowPosition, columnPosition, count;
+    private static Integer[][] board;
+    private static int rowPosition, columnPosition, count;
 
     public ImageAdapter(Context c, int[][] content) {
         context = c;
         count = 0;
-        board = new Integer[content.length][content[0].length];
+        board = new Integer[content[0].length][content.length];
 
         for (int i = 0; i < board.length; i++)
         {
@@ -47,9 +47,10 @@ public class ImageAdapter extends BaseAdapter {
         return board[rowNum][columnNum];
     }
 
-    public void setTile(int rowPosition, int columnPosition, int state, View view, ViewGroup viewGroup) {
+    public void setTile(int rowPosition, int columnPosition, int position,
+                        int state, View view, ViewGroup viewGroup) {
         board[rowPosition][columnPosition] = state;
-        getView(rowPosition, view, viewGroup);
+        getView(position, view, viewGroup);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -64,10 +65,10 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        columnPosition = position / board[0].length;
-        rowPosition = (position - columnPosition) % board[0].length;
+        rowPosition = (position - columnPosition) / board[0].length;
+        columnPosition = position % board[0].length;
 
-        imageView.setImageResource(board[columnPosition][rowPosition]);
+        imageView.setImageResource(board[rowPosition][columnPosition]);
 
         return imageView;
     }

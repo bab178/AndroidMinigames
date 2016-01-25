@@ -8,58 +8,76 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
-    private static int gridSize = 24;
-    private Integer[] mThumbIds;
-    ImageView imageView;
 
+    private Context context;
+    private ImageView imageView;
+    private Integer[][] board;
+    int rowPosition, columnPosition, count;
 
-    public ImageAdapter(Context c) {
-        mContext = c;
-        gridSize = 24;
-        mThumbIds = mapMaker();
+    public ImageAdapter(Context c, int[][] content) {
+        context = c;
+        count = 0;
+        board = new Integer[content.length][content[0].length];
+
+        for (int i = 0; i < board.length; i++)
+        {
+            for (int j = 0; j < board[i].length; j++)
+            {
+                board[i][j] = R.drawable.ms_empty;
+                count++;
+            }
+        }
+        rowPosition = 0;
+        columnPosition = 0;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return count;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return mThumbIds[position];
+    public int getRowCount() {
+        return board.length;
     }
 
-    @Override
-    public long getItemId(int position) {
-        return mThumbIds[position];
+    public int getColumnCount() {
+        return board[0].length;
     }
 
-    public void setTile(int position, int state, View view, ViewGroup viewGroup) {
-        mThumbIds[position] = state;
-        getView(position, view, viewGroup);
+    public Object getItem(int rowNum, int columnNum) {
+        return board[rowNum][columnNum];
     }
 
-    // create a new ImageView for each item referenced by the Adapter
+    public void setTile(int rowPosition, int columnPosition, int state, View view, ViewGroup viewGroup) {
+        board[rowPosition][columnPosition] = state;
+        getView(rowPosition, view, viewGroup);
+    }
+
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setPadding(0, 0, 0, 0);
-        } else {
+            imageView = new ImageView(context);
+            imageView.setLayoutParams(new GridView.LayoutParams(220, 220));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setPadding(2, 2, 2, 2);
+        }
+        else {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        columnPosition = position / board[0].length;
+        rowPosition = (position - columnPosition) % board[0].length;
+
+        imageView.setImageResource(board[columnPosition][rowPosition]);
+
         return imageView;
     }
 
-    private Integer[] mapMaker() {
-        Integer[] newGrid = new Integer[gridSize];
-        for(int i = 0 ; i < gridSize; i++){
-            newGrid[i] = R.drawable.ms_empty;
-        }
-        return newGrid;
+    public Object getItem(int position) {
+        return null;
     }
+
+    public long getItemId(int position) {
+        return 0;
+    }
+
 }

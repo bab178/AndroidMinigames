@@ -7,17 +7,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 public class Minesweeper extends Activity implements View.OnClickListener{
 
-    private Button flags;
+    private ImageButton flags;
+    private Button reset;
     private boolean flag_state = false;
     private GridView gridview;
-    private Integer[] mineField;
-    private int gridSize;
+    private boolean[][] mineField;
     private int num_mines = 0, flags_used = 0, num_mines_flagged = 0;
     private ImageAdapter imageAdapter;
     private boolean gameOver = false;
+    private int num_cols = 6;
+    private int num_rows = 9;
 
     private Integer MS_MINE = R.drawable.ms_mine, MS_FLAG = R.drawable.ms_flag,
             MS_X = R.drawable.ms_x, MS_BLANK = R.drawable.ms_blank, MS_EMPTY = R.drawable.ms_empty;
@@ -27,107 +30,186 @@ public class Minesweeper extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.minesweeper);
 
-        flags = (Button) findViewById(R.id.ms_flag_btn);
+        flags = (ImageButton) findViewById(R.id.ms_flag_btn);
+        reset = (Button) findViewById(R.id.ms_reset_btn);
+        flags.setOnClickListener(this);
+        reset.setOnClickListener(this);
+
         gridview = (GridView) findViewById(R.id.grid);
 
         newGame();
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if(flag_state && num_mines - flags_used > 0) {
-                   //Place flags
-
-                    //Undo place flag
-                    if(imageAdapter.getItem(position) == MS_FLAG) {
-                        imageAdapter.setTile(position, MS_EMPTY, v, parent);
+                int xpos = position%num_cols;
+                int ypos = position/num_cols;
+                Log.d("x"+xpos, "y"+ypos);
+                if(flag_state && num_mines - flags_used > 0) { //Place flags
+                    if(imageAdapter.getItem(xpos, ypos) == MS_FLAG) { //Undo place flag
+                        imageAdapter.setTile(xpos, ypos, MS_EMPTY, v, parent);
                         flags_used--;
                     }
                     else { // Place new flag
-                        imageAdapter.setTile(position, MS_FLAG, v, parent);
+                        imageAdapter.setTile(xpos, ypos, MS_FLAG, v, parent);
                         flags_used++;
-                        if(mineField[position] == 1)
+                        if(mineField[xpos][ypos])
                             num_mines_flagged++;
                     }
-
                 }
                 else {
-                    if(bombSquad(position) == 0) {
-                        //Clear map recursively
-                        imageAdapter.setTile(position, MS_BLANK, v, parent);
+                    if(!bombSquad(xpos,ypos)) { //Hit empty space
+                        //TODO: Clear map recursively
+
+                        //Show surrounding mines
+                        switch (countMines(xpos,ypos)) {
+                            case 0: imageAdapter.setTile(xpos, ypos, MS_BLANK, v, parent); break;
+                            case 1: imageAdapter.setTile(xpos, ypos, R.drawable.ms_1, v, parent); break;
+                            case 2: imageAdapter.setTile(xpos, ypos, R.drawable.ms_2, v, parent); break;
+                            case 3: imageAdapter.setTile(xpos, ypos, R.drawable.ms_3, v, parent); break;
+                            case 4: imageAdapter.setTile(xpos, ypos, R.drawable.ms_4, v, parent); break;
+                            case 5: imageAdapter.setTile(xpos, ypos, R.drawable.ms_5, v, parent); break;
+                            case 6: imageAdapter.setTile(xpos, ypos, R.drawable.ms_6, v, parent); break;
+                            case 7: imageAdapter.setTile(xpos, ypos, R.drawable.ms_7, v, parent); break;
+                            case 8: imageAdapter.setTile(xpos, ypos, R.drawable.ms_8, v, parent); break;
+                        }
+
 
                         if(num_mines_flagged - flags_used == 0 && !gameOver) {
                             //VICTORY
                             gameOver = true;
-                            flags.setText(R.string.victory);
 
-                            for(int i = 0; i < gridSize; i++) {
-                                if(imageAdapter.getItem(position) == MS_FLAG) {
-                                    imageAdapter.setTile(position, MS_MINE, v, parent);
-                                }
-                            }
 
+                            //Reveal mines
+                            for(int i = 0; i < num_cols; i++)
+                                for (int j = 0; j < num_rows; j++)
+                                    if(imageAdapter.getItem(i, j) == MS_FLAG)
+                                        imageAdapter.setTile(i, j, MS_MINE, v, parent);
                         }
                     }
-                    else {
-                        //Hit a bomb, game over
-                        imageAdapter.setTile(position, MS_X, v, parent);
+                    else { //Hit a bomb, game over
+                        imageAdapter.setTile(xpos, ypos, MS_X, v, parent);
                         gameOver = true;
-                        flags.setText(R.string.reset);
                     }
                 }
             }
         });
-
-        flags.setOnClickListener(this);
     }
 
-    private Integer bombSquad(int position) {
-        return mineField[position];
+    private boolean bombSquad(int x, int y) {
+        return mineField[x][y];
     }
 
     private void newGame() {
-        Log.d("Number of mines: "+num_mines, "Flags used: "+flags_used);
+        Log.d("Number of mines "+num_mines, "Flags used "+flags_used);
         gameOver = false;
-        imageAdapter = new ImageAdapter(this);
+        imageAdapter = new ImageAdapter(getApplicationContext(), new int[num_cols][num_rows]);
         gridview.setAdapter(imageAdapter);
+
+        flags.setImageDrawable(getResources().getDrawable(R.drawable.ms_blank));
+        flag_state = false;
 
         num_mines = 0;
         flags_used = 0;
         num_mines_flagged = 0;
 
-        gridSize = imageAdapter.getCount();
-        mineField = new Integer[gridSize];
+        mineField = new boolean[num_cols][num_rows];
 
-        for(int i = 0 ; i < gridSize; i++) {
-            //Chance to place mine
-            boolean r = Math.random() < 0.16;
-
-            //Boolean array of mines
-            //Mine: 1, Clear: 0
-            mineField[i] = r ? 1 : 0;
+        for(int i = 0; i < num_cols; i++)
+            for (int j = 0; j < num_rows; j++) {
+            //Chance to place mine in boolean array of mines
+            mineField[i][j] = Math.random() < 0.2;
 
             //Count mines
-            if(r) {num_mines++;}
+            if(mineField[i][j]) {num_mines++;}
         }
     }
 
     @Override
     public void onClick(View v) {
-        String flags_str = " (" + (num_mines - flags_used) + " LEFT)";
         switch(v.getId()) {
             case R.id.ms_flag_btn:
                 if(!flag_state) {
-                    flags.setText(getString(R.string.flags_on) + flags_str);
+                    flags.setImageDrawable(getResources().getDrawable(R.drawable.ms_flag));
                     flag_state = true;
                 }
                 else {
-                    flags.setText(getString(R.string.flags_off) + flags_str);
+                    flags.setImageDrawable(getResources().getDrawable(R.drawable.ms_blank));
                     flag_state = false;
                 }
-                if(gameOver) {
-                    newGame();
-                }
                 break;
+            case R.id.ms_reset_btn: newGame(); break;
         }
+    }
+
+    private int countMines(int i, int j) {
+        int count = 0;
+        if(i == 0 && j == 0) {
+            if(mineField[i + 1][j + 1]) count++;
+            if(mineField[i + 1][j]) count++;
+            if(mineField[i][j + 1]) count++;
+        }
+        //bottom left corner
+        else if(i == num_rows-1  && j == 0) {
+            if(mineField[i - 1][j + 1]) count++;
+            if(mineField[i - 1][j]) count++;
+            if(mineField[i][j + 1]) count++;
+        }
+        //top right corner
+        else if(i == 0 && j == num_cols-1) {
+            if(mineField[i + 1][j - 1]) count++;
+            if(mineField[i + 1][j]) count++;
+            if(mineField[i][j - 1]) count++;
+        }
+        //Bottom right corner
+        else if(i == num_rows-1 && j == num_cols-1) {
+            if(mineField[i - 1][j - 1]) count++;
+            if(mineField[i - 1][j]) count++;
+            if(mineField[i][j - 1]) count++;
+        }
+        //Top Row Checks
+        else if(i == 0 && (j != 0 && j != num_cols)) {
+            if(mineField[i][j + 1]) count++;
+            if(mineField[i][j - 1]) count++;
+            if(mineField[i + 1][j + 1]) count++;
+            if(mineField[i + 1][j - 1]) count++;
+            if(mineField[i + 1][j]) count++;
+        }
+        //Bottom Row checks
+        else if(i == num_rows-1 && (j != 0 && j != num_cols)) {
+            if(mineField[i][j + 1]) count++;
+            if(mineField[i][j - 1]) count++;
+            if(mineField[i - 1][j - 1]) count++;
+            if(mineField[i - 1][j + 1]) count++;
+            if(mineField[i - 1][j]) count++;
+        }
+        //Left Side Checks
+        else if(j == 0 && (i != 0 && i != num_rows)) {
+            if(mineField[i][j + 1]) count++;
+            if(mineField[i + 1][j]) count++;
+            if(mineField[i - 1][j]) count++;
+            if(mineField[i - 1][j + 1]) count++;
+            if(mineField[i + 1][j + 1]) count++;
+        }
+        //Right Side Checks
+        else if(j == num_cols-1 && (i != 0 && i != num_rows)) {
+            if(mineField[i][j - 1]) count++;
+            if(mineField[i + 1][j]) count++;
+            if(mineField[i - 1][j]) count++;
+            if(mineField[i - 1][j - 1]) count++;
+            if(mineField[i + 1][j - 1]) count++;
+        }
+        //Middle checks
+        else {
+            if(mineField[i - 1][j + 1]) count++;
+            if(mineField[i][j + 1]) count++;
+            if(mineField[i][j - 1]) count++;
+            if(mineField[i + 1][j]) count++;
+            if(mineField[i - 1][j]) count++;
+            if(mineField[i + 1][j + 1]) count++;
+            if(mineField[i - 1][j - 1]) count++;
+            if(mineField[i + 1][j - 1]) count++;
+        }
+        Log.d("Mine Count", ""+count);
+        return count;
     }
 }

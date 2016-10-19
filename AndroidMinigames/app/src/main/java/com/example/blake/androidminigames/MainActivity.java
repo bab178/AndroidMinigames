@@ -23,7 +23,8 @@ public class MainActivity extends Activity {
         String[] values = new String[]{
                 "Tic-Tac-Toe",
                 "Minesweeper",
-                "Game of Life"
+                "Game of Life",
+                "Peg Hopper"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -52,6 +53,9 @@ public class MainActivity extends Activity {
                         break;
                     case 2:
                         startActivity(new Intent(MainActivity.this, GameOfLife.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(MainActivity.this, PegGame.class));
                         break;
                 }
 

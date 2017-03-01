@@ -1,0 +1,5 @@
+AndroidMinigames/gradle/
+.idea/
+AndroidMinigames/gradlew
+AndroidMinigames/gradle.properties
+app/app.iml

@@ -1,4 +1,4 @@
-package com.example.blake.androidminigames;
+package blake.androidminigames;
 
 import android.content.Context;
 import android.view.View;

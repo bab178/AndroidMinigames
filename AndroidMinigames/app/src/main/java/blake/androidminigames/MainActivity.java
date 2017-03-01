@@ -1,4 +1,4 @@
-package com.example.blake.androidminigames;
+package blake.androidminigames;
 
 import android.app.Activity;
 import android.content.Intent;

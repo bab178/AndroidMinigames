@@ -1,4 +1,4 @@
-package com.example.blake.androidminigames;
+package blake.androidminigames;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -113,12 +113,12 @@ public class Minesweeper extends Activity implements View.OnClickListener{
 
         for(int i = 0; i < num_rows; i++)
             for (int j = 0; j < num_cols; j++) {
-            //Chance to place mine in boolean array of mines
-            mineField[i][j] = Math.random() < 0.2;
+                //Chance to place mine in boolean array of mines
+                mineField[i][j] = Math.random() < 0.2;
 
-            //Count mines
-            if(mineField[i][j]) {num_mines++;}
-        }
+                //Count mines
+                if(mineField[i][j]) {num_mines++;}
+            }
         num_mines_flagged = num_mines;
     }
 
@@ -145,8 +145,8 @@ public class Minesweeper extends Activity implements View.OnClickListener{
         for(int tempRow = i-1; tempRow <= i+1; tempRow++)  //go around current position
             for(int tempCol = j-1; tempCol <= j+1; tempCol++)
                 if(tempRow >= 0 && tempRow < num_rows && tempCol >= 0 &&
-                   tempCol < num_cols && tempRow != i && tempCol != j &&
-                   mineField[tempRow][tempCol])
+                        tempCol < num_cols && tempRow != i && tempCol != j &&
+                        mineField[tempRow][tempCol])
                     count++;
 
         Log.d("Mines Count", ""+count);

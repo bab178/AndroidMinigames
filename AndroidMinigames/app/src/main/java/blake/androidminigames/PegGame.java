@@ -1,4 +1,4 @@
-package com.example.blake.androidminigames;
+package blake.androidminigames;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
